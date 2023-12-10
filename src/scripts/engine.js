@@ -36,7 +36,7 @@ function addListenerHitBox() {
 
 function initialize() {
     randomSquare();
-    // moveEnemy();
+    moveEnemy();
 }
 
 initialize()
