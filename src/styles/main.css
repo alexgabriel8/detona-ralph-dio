@@ -33,7 +33,10 @@
 
 .enemy {
     background-image: url("../images/ralph.png");
-    background-size: cover;
+    
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .menu-lives {
