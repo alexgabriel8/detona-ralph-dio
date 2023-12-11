@@ -9,10 +9,28 @@ const state = {
 
     // Variables that are related to something the player cannot see; that are manipulated in the background
     values: {
-        timerId: null,
         gameVelocity: 1000,
         hitPosition: 0,
         result: 0,
+        currentTime: 60,
+    },
+    
+    // variables that do something; do/call an action
+    actions: {
+        timerId: setInterval(randomSquare, 1000),
+        countDownTimerId: setInterval(countDown, 1000),
+
+    }
+}
+
+function countDown() {
+    state.values.currentTime--;
+    state.view.timeLeft.textContent = state.values.currentTime;
+
+    if(state.values.currentTime <= 0) {
+        clearInterval(state.actions.countDownTimerId)
+        clearInterval(state.actions.timerId)
+        alert(`Game Over! O seu resultado foi ${state.values.result}`)
     }
 }
 
@@ -27,9 +45,7 @@ function randomSquare() {
     state.values.hitPosition = randomSquare.id;
 }
 
-function moveEnemy() {
-    state.values.timerId = setInterval(randomSquare, state.values.gameVelocity)
-}
+
 
 function addListenerHitBox() {
     state.view.squares.forEach((square) => {
@@ -44,9 +60,7 @@ function addListenerHitBox() {
 }
 
 function initialize() {
-    randomSquare();
     addListenerHitBox();
-    moveEnemy();
 }
 
 initialize()
