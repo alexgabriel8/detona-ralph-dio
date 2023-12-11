@@ -4,7 +4,8 @@ const state = {
         squares: document.querySelectorAll(".square"),
         enemy: document.querySelector(".enemy"),
         timeLeft: document.querySelector("#time-left"),
-        score: document.querySelector("#score")
+        score: document.querySelector("#score"),
+        restartBtn: document.querySelector(".restart-btn")
     },
 
     // Variables that are related to something the player cannot see; that are manipulated in the background
@@ -17,9 +18,8 @@ const state = {
     
     // variables that do something; do/call an action
     actions: {
-        timerId: setInterval(randomSquare, 1000),
-        countDownTimerId: setInterval(countDown, 1000),
-
+        timerId: null,
+        countDownTimerId: null,
     }
 }
 
@@ -27,11 +27,7 @@ function countDown() {
     state.values.currentTime--;
     state.view.timeLeft.textContent = state.values.currentTime;
 
-    if(state.values.currentTime <= 0) {
-        clearInterval(state.actions.countDownTimerId)
-        clearInterval(state.actions.timerId)
-        alert(`Game Over! O seu resultado foi ${state.values.result}`)
-    }
+    if(state.values.currentTime <= 0) finishGame()
 }
 
 function playSound(audioName) {
@@ -51,8 +47,6 @@ function randomSquare() {
     state.values.hitPosition = randomSquare.id;
 }
 
-
-
 function addListenerHitBox() {
     state.view.squares.forEach((square) => {
         square.addEventListener("mousedown", () => {
@@ -68,6 +62,24 @@ function addListenerHitBox() {
 
 function initialize() {
     addListenerHitBox();
+    state.view.restartBtn.classList.add("hidden")
+    state.actions.timerId = setInterval(randomSquare, 1000)
+    state.actions.countDownTimerId = setInterval(countDown, 1000)
+}
+
+function finishGame() {
+    clearInterval(state.actions.countDownTimerId)
+    clearInterval(state.actions.timerId)
+    state.view.restartBtn.classList.remove("hidden")
+    alert(`Game Over! O seu resultado foi ${state.values.result}`)
+}
+
+function restartGame() {
+    state.values.currentTime = 60;
+    state.view.timeLeft.textContent = state.values.currentTime;
+    state.values.result = 0;
+    state.view.score.textContent = state.values.result
+    initialize()
 }
 
 initialize()
